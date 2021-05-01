@@ -5,11 +5,10 @@
 //  Created by Geoffry Gambling on 4/26/21.
 //
 
-import UIKit
 struct CutUpLogic {
    
     
-    func cutUpSeparatedByComponents(text: String, separator: String, _ _: UIAlertAction) -> [String] {
+    func cutUpSeparatedByComponents(text: String, separator: String) -> [String] {
         var array = [String]()
         
         array = text.components(separatedBy: separator)

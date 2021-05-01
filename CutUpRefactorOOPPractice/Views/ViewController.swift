@@ -27,8 +27,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cut", style: .done, target: self, action: #selector(cutSelectionActionSheet))
     }
     
-    
-    
+
     @objc func cutText() {
        
         cutUp += cutUpLogic.cutUpBySelectedAmount(text: textView.text, chunkSize: 3)
@@ -37,30 +36,43 @@ class ViewController: UIViewController, UITextViewDelegate {
     }
     
     @objc func cutSelectionActionSheet() {
+        
+        if textView.text == "" {
+            return
+        }
+        
         let prompt = UIAlertController(title: "Choose How You'd Like to Cut Your Text",
                                        message: nil,
                                        preferredStyle: .actionSheet)
       
-        let byLineAction = UIAlertAction(title: "Single Lines", style: .default) { (alert) in
-            self.cutUp = self.cutUpLogic.cutUpSeparatedByComponents(text: self.textView.text, separator: "\n", alert)
+        let byLineAction = UIAlertAction(title: "Single Lines", style: .default) { _ in
+            self.cutUp += self.cutUpLogic.cutUpSeparatedByComponents(text: self.textView.text, separator: "\n")
             self.textView.text = ""
         }
         
+        let byWordAction = UIAlertAction(title: "Single Words", style: .default) { _ in
+            self.cutUp += self.cutUpLogic.cutUpSeparatedByComponents(text: self.textView.text, separator: " ")
+            self.textView.text = ""
+        }
         
-//        let byWordAction = UIAlertAction(title: "Single Words", style: .default, handler: byWord)
-//
-//        let byFiveWordsAction = UIAlertAction(title: "Every Fifth Word", style: .default, handler: byFiveWords)
-//
-//        let byThreeWordsAction = UIAlertAction(title: "Every Third Word", style: .default, handler: byThreeWords)
+        let byThreeWordsAction = UIAlertAction(title: "Every Third Word", style: .default) { _ in
+            self.cutUp += self.cutUpLogic.cutUpBySelectedAmount(text: self.textView.text, chunkSize: 3)
+            self.textView.text = ""
+        }
+        
+        let byFiveWordsAction = UIAlertAction(title: "Every Fifth Word", style: .default) { _ in
+            self.cutUp += self.cutUpLogic.cutUpBySelectedAmount(text: self.textView.text, chunkSize: 5)
+            self.textView.text = ""
+        }
         
         let cancelAction = UIAlertAction(title: "Cancel",
                                          style: .cancel,
                                          handler: nil)
         
         prompt.addAction(byLineAction)
-//        prompt.addAction(byWordAction)
-//        prompt.addAction(byFiveWordsAction)
-//        prompt.addAction(byThreeWordsAction)
+        prompt.addAction(byWordAction)
+        prompt.addAction(byThreeWordsAction)
+        prompt.addAction(byFiveWordsAction)
         prompt.addAction(cancelAction)
         
         present(prompt, animated: true, completion: nil)
