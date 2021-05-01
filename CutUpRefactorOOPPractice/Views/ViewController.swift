@@ -44,6 +44,10 @@ class ViewController: UIViewController, UITextViewDelegate {
         let prompt = UIAlertController(title: "Choose How You'd Like to Cut Your Text",
                                        message: nil,
                                        preferredStyle: .actionSheet)
+        
+        //Alert popover origin required for iPad
+        prompt.popoverPresentationController?.sourceView = self.view
+        prompt.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,width: 0,height: 0)
       
         let byLineAction = UIAlertAction(title: "Single Lines", style: .default) { _ in
             self.cutUp += self.cutUpLogic.cutUpSeparatedByComponents(text: self.textView.text, separator: "\n")
