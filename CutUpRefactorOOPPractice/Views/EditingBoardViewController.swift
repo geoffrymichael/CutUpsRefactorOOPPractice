@@ -25,6 +25,8 @@ class EditingBoardViewController: UITableViewController, UINavigationControllerD
         tableView.dragDelegate = self
         tableView.dropDelegate = self
         tableView.dragInteractionEnabled = true
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Shuffle", style: .plain, target: self, action: #selector(shuffle))
     }
 
     
@@ -62,6 +64,11 @@ class EditingBoardViewController: UITableViewController, UINavigationControllerD
         }
     }
    
+    
+    @objc func shuffle() {
+        cutUp.shuffle()
+        tableView.reloadData()
+    }
 
 }
 
