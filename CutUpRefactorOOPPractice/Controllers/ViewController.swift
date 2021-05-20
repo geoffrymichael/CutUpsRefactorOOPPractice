@@ -21,6 +21,10 @@ class ViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        let gutengBergRandomPassage = GutenbergRandomPassageLogic()
+        
+        gutengBergRandomPassage.getGutenbergPassage()
+        
         textView.delegate = self
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .done, target: self, action: #selector(goToEditingView))
