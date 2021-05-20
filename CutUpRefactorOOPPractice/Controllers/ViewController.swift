@@ -23,7 +23,9 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         let gutengBergRandomPassage = GutenbergRandomPassageLogic()
         
-        gutengBergRandomPassage.getGutenbergPassage()
+        gutengBergRandomPassage.getGutenbergPassage { text in
+            self.textView.text = text
+        }
         
         textView.delegate = self
 

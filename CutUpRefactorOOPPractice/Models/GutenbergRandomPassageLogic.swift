@@ -11,8 +11,7 @@ struct GutenbergRandomPassageLogic {
     
     
     
-    func getGutenbergPassage()  {
-        var gutenbergText = String()
+    func getGutenbergPassage(completionHandler: @escaping (_ text: String) -> () )  {
         
         let rando = Int.random(in: 0...1600)
         
@@ -23,7 +22,9 @@ struct GutenbergRandomPassageLogic {
         session.dataTask(with: URL(string: url)!) { (data, response, error) in
             if error != nil {
                 DispatchQueue.main.async {
-                    gutenbergText = "Cut-ups error. Something went wrong, please make sure you are conected to the internet to use the random feature."
+                    let error = "Cut-ups error. Something went wrong, please make sure you are conected to the internet to use the random feature."
+                    
+                    completionHandler(error)
                 }
             } else {
                 let str = String(decoding: data!, as: UTF8.self)
@@ -31,7 +32,7 @@ struct GutenbergRandomPassageLogic {
                 
                 let randomInt = Int.random(in: 400...str.count - 301)
                                                                          
-                let substring = str[randomInt..<randomInt + 300]
+                let gutenbergText = str[randomInt..<randomInt + 300]
 
                 let myString = str.components(separatedBy: .newlines)
                 
@@ -41,8 +42,7 @@ struct GutenbergRandomPassageLogic {
 //                print(myString[0...1], randomInt)
 
                 DispatchQueue.main.async {
-                    gutenbergText = substring
-                    print(gutenbergText, "😾")
+                    completionHandler(gutenbergText)
 //                    self.activityIN.stopAnimating()
 //
 //                    self.setupGutenbergCitationView()
@@ -65,8 +65,6 @@ struct GutenbergRandomPassageLogic {
             }
             
         }.resume()
-        
-        
     }
     
 }
